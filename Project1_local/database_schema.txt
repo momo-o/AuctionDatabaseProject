@@ -1,0 +1,49 @@
+CREATE TABLE ITEMS(
+	itemID    		INTEGER  PRIMARY KEY,
+	name      		VARCHAR,
+	currently 		VARCHAR,
+	buy_price 		VARCHAR,
+	first_bid 		VARCHAR,
+	number_of_bids  	INTEGER,
+	started         	VARCHAR,
+	ends			VARCHAR,
+	description     	VARCHAR
+);
+
+CREATE TABLE CATEGORY(
+	categoryName  VARCHAR PRIMARY KEY
+);
+
+CREATE TABLE USER(
+	userID		VARCHAR  PRIMARY KEY,
+	location	VARCHAR,
+	country		VARCHAR,
+	rating		INTEGER
+)
+
+CREATE TABLE BID(
+	time		VARCHAR,
+	amount		VARCHAR,
+	userID		VARCHAR,
+	itemID		VARCHAR,
+	PRIMARY KEY (userID, itemID),
+	FOREIGN KEY (userID) REFERENCES USER,
+	FOREIGN KEY (itemID) REFERENCES ITEMS
+)
+
+CREATE TABLE CATITEM(
+	category   VARCHAR,
+	itemID 	   INTEGER,
+	PRIMARY KEYcol (category, itemID),
+	FOREIGN KEY (category) REFERENCE CATEGORY,
+	FOREIGN KEY (itemID)   REFERENCE ITEMS
+)
+
+CREATE TABLE SELL(
+	userID		VARCHAR,
+	itemID 		VARCHAR,
+	PRIMARY KEY (itemID),
+	FOREIGN KEY (userID) REFERENCE USER,
+	FOREIGN KEY (itemID) REFERENCE ITEMS 
+)
+

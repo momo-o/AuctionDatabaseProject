@@ -1,0 +1,75 @@
+ Constrains for Users
+ 
+1. No two users can share the same User_ID
+-> Set UserID as the Primary key in users table
+Location: create.sql
+
+2.All sellers and bidders must already exist as users.
+-> Make UserID in items table and UserID in bids table Foreign key reference on UserID in users table.
+Location:create.sql
+
+
+ Constraints for Items
+ 
+3.No two items can share the same Item ID. 
+-> Set ItemID as the Primary key in item table.
+Location:create.sql
+
+4. Every bid must correspond to an actual item.
+-> Make ItemID in bids table Foreign Key reference on ItemID in items table.
+Location:create.sql
+
+5. The items for a given category must all exist.
+-> Make ItemID in categories table Foreign Key reference on ItemID in items table.
+Location:create.sql
+
+6. An item cannot belong to a particular category more than once.
+-> Make the combination of ItemID and category as Primary Key in categories table.
+Location:create.sql
+
+7. The end time for an auction must always be after its start time.
+-> In item table, write an constraint sentence to make started time smaller than ends time.
+Location:create.sql
+
+8. The Current Price of an item must always match the Amount of the most recent bid for that item.
+-> Add a trigger which will be fired every time a new tuple is added on bids table, 
+where currently attribute in item table is updated based on amount attribute in newly inserted tuple. 
+Location:trigger08_add.sql; trigger08_drop.sql
+
+
+ Constraints for Bidding
+
+9. A user may not bid on an item he or she is also selling.
+-> Add trigger which will check combination of userID and ItemID in item table if they are equal to 
+the newly inserted bid tuple's user ID and ItemID. If they are equal, forbid the insertion.
+Location: trigger09_add.sql;trigger09_drop.sql
+
+10. No auction may have two bids at the exact same time.
+-> In bid table, make the combination of time and ItemID as primary key.
+Location:create.sql 
+
+11. No auction may have a bid before its start time or after its end time.
+-> Add trigger which will check if newly added bid time is within the range of start time and ends time in item table
+Location: trigger11_add.sql; trigger11_drop.sql
+
+12. No user can make a bid of the same amount to the same item more than once.
+-> In bid table, set the combination of ItemID, UserID and Amount as UNIQUE.
+Location: create.sql
+
+
+13. In every auction, the Number of Bids attribute corresponds to the actual number of bids for that particular
+item.
+->Add a trigger that add one on corresponding Number of Bids attribute in items table every time a new bid is inserted.
+Location: trigger13_add.sql; trigger13_drop.sql
+
+14.Any new bid for a particular item must have a higher amount than any of the previous bids for that particular item.
+-> Add a trigger which will check the bid amount is higher than any previous one before insertion.
+Location: trigger14_add.sql; trigger14_drop.sql
+
+15.All new bids must be placed at the time which matches the current time of your AuctionBase system.
+-> Add a trigger to check the time of the new bid equal to the current time of the Current Time table.
+Location: trigger15_add.sql; trigger15_drop.sql
+
+16. The current time of your AuctionBase system can only advance forward in time, not backward in time.
+-> Add a trigger to prevent insertion and delete on current time and also make sure the time is always larger than previous ones when updating.
+Location: trigger16_add.sql; trigger16_drop.sql
